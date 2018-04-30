@@ -16,12 +16,14 @@ NOP unMicroprocesador = unMicroprocesador { programCounter = programCounter unMi
 
 --2.--
 
+programaQueIncrementeElPC3 :: microProcesador -> microProcesador
 programaQueIncrementeElPC3 = NOP.NOP.NOP
 
 --En este punto interviene la composicion--
 
-
 --3.3 punto 3--
+
+--1.--
 
 LODV :: Int -> microProcesador -> microProcesador
 LODV val unMicroprocesador = unMicroprocesador { acumuladorA = val + acumuladorA unMicroprocesador}
@@ -32,7 +34,14 @@ SWAP unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA}
 ADD :: microProcesador -> microProcesador
 ADD unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
 
+--2.--
+
+
 --3.4 punto 4--
+
+--1.--
+
+DIVIDE unMicroprocesador = unMicroprocesador {acumuladorA = acumuladorA unMicroprocesador / acumuladorB unMicroprocesador , acumuladorB = 0}
 
 STR addr val unMicroprocesador = unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador))}
 
