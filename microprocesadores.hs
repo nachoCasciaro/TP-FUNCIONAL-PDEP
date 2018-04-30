@@ -2,11 +2,24 @@ import Text.Show.Functions
 
 --3.1 punto 1--
 
+--1.--
 data microProcesador = unMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter = Int, etiqueta :: String} deriving (Show)
 
+--1.a.--
 xt80800 = unMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, etiqueta = [] }
 
---NOP
+--3.2 Punto 2--
+
+--1.--
+NOP :: microProcesador -> microProcesador
+NOP unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
+
+--2.--
+
+programaQueIncrementeElPC3 = NOP.NOP.NOP
+
+--En este punto interviene la composicion--
+
 
 --3.3 punto 3--
 
