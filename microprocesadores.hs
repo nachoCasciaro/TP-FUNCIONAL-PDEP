@@ -3,21 +3,22 @@ import Text.Show.Functions
 --3.1 punto 1--
 
 --1.--
-data microProcesador = unMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter = Int, etiqueta :: String} deriving (Show)
+
+data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter :: Int, etiqueta :: String} deriving (Show)
 
 --1.a.--
-xt80800 = unMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, etiqueta = [] }
+xt80800 = UnMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, etiqueta = [] }
 
 --3.2 Punto 2--
 
 --1.--
-NOP :: microProcesador -> microProcesador
-NOP unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
+nop :: MicroProcesador -> MicroProcesador
+nop unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
 
 --2.--
 
-programaQueIncrementeElPC3 :: microProcesador -> microProcesador
-programaQueIncrementeElPC3 = NOP.NOP.NOP
+programaQueIncrementeElPC3 :: MicroProcesador -> MicroProcesador
+programaQueIncrementeElPC3 = nop.nop.nop
 
 --En este punto interviene la composicion--
 
@@ -25,14 +26,14 @@ programaQueIncrementeElPC3 = NOP.NOP.NOP
 
 --1.--
 
-LODV :: Int -> microProcesador -> microProcesador
-LODV val unMicroprocesador = unMicroprocesador { acumuladorA = val + acumuladorA unMicroprocesador}
+lodv :: Int -> MicroProcesador -> MicroProcesador
+lodv val unMicroprocesador = unMicroprocesador { acumuladorA = val + acumuladorA unMicroprocesador, programCounter = programCounter unMicroprocesador +1}
 
-SWAP :: microProcesador -> microProcesador
-SWAP unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA}
+swap :: MicroProcesador -> MicroProcesador
+swap unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador,acumuladorA= acumuladorB unMicroprocesador, programCounter =  programCounter unMicroprocesador +1}
 
-ADD :: microProcesador -> microProcesador
-ADD unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
+add :: MicroProcesador -> MicroProcesador
+add unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0, programCounter = programCounter unMicroprocesador +1}
 
 --2.--
 
@@ -41,8 +42,10 @@ ADD unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicropro
 
 --1.--
 
-DIVIDE unMicroprocesador = unMicroprocesador {acumuladorA = acumuladorA unMicroprocesador / acumuladorB unMicroprocesador , acumuladorB = 0}
+divide unMicroprocesador = unMicroprocesador {acumuladorA = acumuladorA unMicroprocesador / acumuladorB unMicroprocesador , acumuladorB = 0, programCounter = programCounter unMicroprocesador +1}
 
-STR addr val unMicroprocesador = unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador))}
+str addr val unMicroprocesador = unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador)), programCounter = programCounter unMicroprocesador +1}
 
-LOD addr unMicroprocesador =
+lod addr unMicroprocesador = True
+
+--2.--
