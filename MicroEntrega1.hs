@@ -57,5 +57,5 @@ lod :: Int->MicroProcesador->MicroProcesador
 lod addr unMicroprocesador = unMicroprocesador { acumuladorA = (!!) (memoria unMicroprocesador) (addr-1), programCounter =  programCounter unMicroprocesador +1}
 
 --2.--
-
+programaQueDivide2Por0 :: Int->Int->Int->Int->MicroProcesador->MicroProcesador
 programaQueDivide2Por0 valor1 valor2 addr1 addr2 unMicroprocesador  = (divide.(lod addr1).swap.(lod addr2).(str addr2 valor1) .(str addr1 valor2)) unMicroprocesador
