@@ -8,11 +8,13 @@ import Text.Show.Functions
 data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter :: Int, etiqueta :: String} deriving (Show)
 
 --1.a.--
+
 xt80800 = UnMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, etiqueta = [] }
 
 --3.2 Punto 2--
 
 --1.--
+
 nop :: MicroProcesador -> MicroProcesador
 nop unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
 
@@ -57,5 +59,6 @@ lod :: Int->MicroProcesador->MicroProcesador
 lod addr unMicroprocesador = unMicroprocesador { acumuladorA = (!!) (memoria unMicroprocesador) (addr-1), programCounter =  programCounter unMicroprocesador +1}
 
 --2.--
+
 programaQueDivide2Por0 :: Int->Int->Int->Int->MicroProcesador->MicroProcesador
 programaQueDivide2Por0 valor1 valor2 addr1 addr2 unMicroprocesador  = (divide.(lod addr1).swap.(lod addr2).(str addr2 valor1) .(str addr1 valor2)) unMicroprocesador
