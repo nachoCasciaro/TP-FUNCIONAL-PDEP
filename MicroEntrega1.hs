@@ -1,3 +1,4 @@
+module MicroEntrega1 where
 import Text.Show.Functions
 
 --3.1 punto 1--
