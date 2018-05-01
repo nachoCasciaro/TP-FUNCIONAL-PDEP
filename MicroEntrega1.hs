@@ -30,10 +30,10 @@ programaQueIncrementeElPC3 = nop.nop.nop
 --1.--
 
 lodv :: Int -> MicroProcesador -> MicroProcesador
-lodv val unMicroprocesador = unMicroprocesador { acumuladorA = val , programCounter = programCounter unMicroprocesador +1}
+lodv val unMicroprocesador = unMicroprocesador { acumuladorA = val, programCounter = programCounter unMicroprocesador +1 }
 
 swap :: MicroProcesador -> MicroProcesador
-swap unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador,acumuladorA= acumuladorB unMicroprocesador, programCounter =  programCounter unMicroprocesador +1}
+swap unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador, acumuladorA= acumuladorB unMicroprocesador, programCounter =  programCounter unMicroprocesador +1}
 
 add :: MicroProcesador -> MicroProcesador
 add unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0, programCounter = programCounter unMicroprocesador +1}
