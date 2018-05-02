@@ -4,11 +4,13 @@ module MicroEntrega1 where
 
 --1.--
 
-data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter :: Int, etiqueta :: String} deriving (Show)
+data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter :: Int, mensajeError :: String} deriving (Show)
+
+--usamos una lista de enteros para la memoria donde se guardaran los datos en cada posicion del mismo, los acumuladores son enteros para contener los valores, lo mismo para el programCounter ya que se incrementa cada vez que se ejecuta una instruccion y por ultimo la etiqueta que almacena un string con el ultimo mensaje de error producido
 
 --1.a.--
 
-xt80800 = UnMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, etiqueta = [] }
+xt80800 = UnMicroprocesador { memoria = [] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [] }
 
 --3.2 Punto 2--
 
@@ -50,7 +52,7 @@ programaQueSume10Con22 valor1 valor2 unMicroprocesador = (add.(lodv valor2).swap
 divide :: MicroProcesador->MicroProcesador
 divide unMicroprocesador
       |(acumuladorB unMicroprocesador) /= 0 =  aumentarPC unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0}
-      |otherwise = aumentarPC unMicroprocesador {etiqueta = "division by zero"}
+      |otherwise = aumentarPC unMicroprocesador {mensajeError = "division by zero"}
 
 str :: Int->Int->MicroProcesador->MicroProcesador
 str addr val unMicroprocesador = aumentarPC unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador))}
