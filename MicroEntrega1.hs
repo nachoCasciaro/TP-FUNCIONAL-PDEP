@@ -30,14 +30,15 @@ programaQueIncrementeElPC3 = nop.nop.nop
 --1.--
 
 lodv :: Int -> MicroProcesador -> MicroProcesador
-lodv val unMicroprocesador = unMicroprocesador { acumuladorA = val, programCounter = programCounter unMicroprocesador +1 }
+lodv val unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = val}
 
 swap :: MicroProcesador -> MicroProcesador
-swap unMicroprocesador = unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador, acumuladorA= acumuladorB unMicroprocesador, programCounter =  programCounter unMicroprocesador +1}
+swap unMicroprocesador = aumentarPC unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador, acumuladorA= acumuladorB unMicroprocesador}
 
 add :: MicroProcesador -> MicroProcesador
-add unMicroprocesador = unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0, programCounter = programCounter unMicroprocesador +1}
+add unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
 
+aumentarPC = nop
 --2.--
 
 programaQueSume10Con22 :: Int->Int->MicroProcesador->MicroProcesador
@@ -49,14 +50,14 @@ programaQueSume10Con22 valor1 valor2 unMicroprocesador = (add.(lodv valor2).swap
 
 divide :: MicroProcesador->MicroProcesador
 divide unMicroprocesador
-      |(acumuladorB unMicroprocesador) /= 0 =  unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0, programCounter = programCounter unMicroprocesador +1}
-      |otherwise = unMicroprocesador {etiqueta = "division by zero",programCounter =  programCounter unMicroprocesador +1 }
+      |(acumuladorB unMicroprocesador) /= 0 =  aumentarPC unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0}
+      |otherwise = aumentarPC unMicroprocesador {etiqueta = "division by zero"}
 
 str :: Int->Int->MicroProcesador->MicroProcesador
-str addr val unMicroprocesador = unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador)), programCounter = programCounter unMicroprocesador +1}
+str addr val unMicroprocesador = aumentarPC unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr-1) (memoria unMicroprocesador))}
 
 lod :: Int->MicroProcesador->MicroProcesador
-lod addr unMicroprocesador = unMicroprocesador { acumuladorA = (!!) (memoria unMicroprocesador) (addr-1), programCounter =  programCounter unMicroprocesador +1}
+lod addr unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = (!!) (memoria unMicroprocesador) (addr-1)}
 
 --2.--
 
