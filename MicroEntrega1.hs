@@ -39,11 +39,12 @@ swap unMicroprocesador = aumentarPC unMicroprocesador { acumuladorB = acumulador
 add :: MicroProcesador -> MicroProcesador
 add unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
 
-aumentarPC = nop
+aumentarPC :: MicroProcesador->MicroProcesador
+aumentarPC unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
 --2.--
 
-programaQueSume10Con22 :: Int->Int->MicroProcesador->MicroProcesador
-programaQueSume10Con22 valor1 valor2 unMicroprocesador = (add.(lodv valor2).swap.(lodv valor1)) unMicroprocesador
+programaQueSume10Con22 :: MicroProcesador->MicroProcesador
+programaQueSume10Con22 unMicroprocesador = (add.(lodv 22).swap.(lodv 10)) unMicroprocesador
 
 --3.4 punto 4--
 
@@ -62,5 +63,5 @@ lod addr unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = (!!) (
 
 --2.--
 
-programaQueDivide2Por0 :: Int->Int->Int->Int->MicroProcesador->MicroProcesador
-programaQueDivide2Por0 valor1 valor2 addr1 addr2 unMicroprocesador  = (divide.(lod addr1).swap.(lod addr2).(str addr2 valor1) .(str addr1 valor2)) unMicroprocesador
+programaQueDivide2Por0 :: MicroProcesador->MicroProcesador
+programaQueDivide2Por0 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2 0) .(str 1 2)) unMicroprocesador
