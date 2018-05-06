@@ -92,11 +92,11 @@ main = hspec $ do
         it "nop no modifica el mensaje de error" $ do
             ((mensajeError.nop) xt80800) `shouldBe` ([]::String)
 
-        it "Programa que incremente 3 veces el program counter" $ do
+        it "programa que incremente 3 veces el program counter" $ do
             ((programCounter.programaQueIncrementeElPC3) xt80800) `shouldBe` (3::Int)
 
     describe "Test 4.2 Punto 3" $ do
-        it "lodv 5 lo carga en acumulador A" $ do
+        it "lodv 5, carga un 5 en el acumulador A" $ do
             ((acumuladorA.(lodv 5)) xt80800) `shouldBe` (5::Int)
 
         it "lodv 5 deja el acumuladorB en 0" $ do
@@ -118,23 +118,23 @@ main = hspec $ do
             ((programCounter.programaQueSume10Con22) xt80800) `shouldBe` (4::Int)
 
     describe "Test 4.3 Punto 4" $ do
-        it "str 2 5 en la memoria pone un 5 en la posicion 2" $ do
+        it "str 2 5, en la memoria pone un 5 en la posicion 2" $ do
             ((memoria.(str 2 5)) at8086) `shouldBe` ([1, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]::[Int])
 
         it "lod 2 de una memoria vacía debe dejar con 0 el acumuladorA" $ do
             ((acumuladorA.(lod 2))  xt80800) `shouldBe` (0::Int)
 
-        it "Division por cero da error" $ do
+        it "la division por cero da error" $ do
             ((mensajeError.programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
 
-        it "Division por cero aumenta en 6 el program counter" $ do
+        it "la division por cero aumenta en 6 el program counter" $ do
             ((programCounter.programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
 
-        it "Division de 12 por 4 debe guardar un 3 en el acumulador A " $ do
+        it "la division de 12 por 4 debe guardar un 3 en el acumulador A " $ do
             ((acumuladorA.programaQueDivide12Por4) xt80800) `shouldBe` (3::Int)
 
-        it "Division de 12 por 4 deja en 0 el Acumulador B" $ do
+        it "la division de 12 por 4 deja en 0 el Acumulador B" $ do
             ((acumuladorB.programaQueDivide12Por4) xt80800) `shouldBe` (0::Int)
 
-        it "Division de 12 por 4 no deja el mensaje de error porque funciona bien" $ do
+        it "la division de 12 por 4 no deja un mensaje de error porque realiza la division sin problemas" $ do
             ((mensajeError.programaQueDivide12Por4) xt80800) `shouldBe` ([]::String)
