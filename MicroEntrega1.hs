@@ -80,16 +80,16 @@ programaQueDivide12Por4 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2
 
 main = hspec $ do
     describe "Test 4.1 Punto 2 - Tests de NOP" $ do
-        it "NOP no cambia el acumulador A" $ do
+        it "NOP no modifica el acumulador A" $ do
             ((acumuladorA.nop) xt80800) `shouldBe` (0::Int)
 
-        it "NOP no cambia el acumulador B" $ do
+        it "NOP no modifica el acumulador B" $ do
             ((acumuladorB.nop) xt80800) `shouldBe` (0::Int)
 
-        it "NOP no cambia la memoria" $ do
+        it "NOP no modifica la memoria" $ do
             ((memoria.nop) xt80800) `shouldBe` (replicate 1024 0::[Int])
 
-        it "NOP no cambia el mensaje de error" $ do
+        it "NOP no modifica el mensaje de error" $ do
             ((mensajeError.nop) xt80800) `shouldBe` ([]::String)
 
         it "Programa que incremente 3 veces el program counter" $ do
@@ -102,23 +102,23 @@ main = hspec $ do
         it "LODV 5 deja el acumuladorB en 0" $ do
             ((acumuladorB.(lodv 5)) xt80800) `shouldBe` (0::Int)
 
-        it "SWAP cambia el valor del acumulador A (7) por el del acumulador B (24)" $ do
+        it "SWAP intercambia el valor del acumulador A (7) por el del acumulador B (24)" $ do
             ((acumuladorA.swap) fp20) `shouldBe` (24::Int)
 
-        it "SWAP cambia el valor del acumulador B (24) por el del acumulador A (7)" $ do
+        it "SWAP intercambia el valor del acumulador B (24) por el del acumulador A (7)" $ do
             ((acumuladorB.swap) fp20) `shouldBe` (7::Int)
 
-        it "Suma 10 + 22 da 32 en Acumulador A" $ do
+        it "El programa que suma 10 con 22, que da como resultado 32, y lo guarda en Acumulador A" $ do
             ((acumuladorA.programaQueSume10Con22) xt80800) `shouldBe` (32::Int)
 
-        it "Suma 10 + 22 deja en 0 el Acumulador B" $ do
-            (((acumuladorB.add.(lodv 22).swap.(lodv 10))) xt80800) `shouldBe` (0::Int)
+        it "El programa que suma 10 con 22 deja en 0 el Acumulador B" $ do
+            ((acumuladorB.programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
 
-        it "Suma 10 + 22 aumenta en 4 el Program Counter" $ do
-            ((programCounter.add.(lodv 22).swap.(lodv 10)) xt80800) `shouldBe` (4::Int)
+        it "El programa que suma 10 con 22 aumenta en 4 el Program Counter" $ do
+            ((programCounter.programaQueSume10Con22) xt80800) `shouldBe` (4::Int)
 
     describe "Test 4.3 Punto 4 - Tests de División" $ do
-        it "STR 2 5 para la memoria, pone un 5 en la posicion 2" $ do
+        it "STR 2 5 en la memoria pone un 5 en la posicion 2" $ do
             ((memoria.(str 2 5)) at8086) `shouldBe` ([1, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]::[Int])
 
         it "LOD 2 de una memoria vacía debe dejar con 0 el acumuladorA" $ do
