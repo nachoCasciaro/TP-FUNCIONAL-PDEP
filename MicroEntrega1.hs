@@ -73,7 +73,10 @@ fp20 :: MicroProcesador
 fp20 = UnMicroprocesador { memoria = [] , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = [] }
 
 at8086 :: MicroProcesador
-at8086 = UnMicroprocesador {memoria=[1..20],acumuladorA=0,acumuladorB=0,programCounter=0,mensajeError=[]}
+at8086 = UnMicroprocesador {memoria=[1..20], acumuladorA=0, acumuladorB=0, programCounter=0, mensajeError=[]}
+
+programaQueDivide12Por4 :: MicroProcesador->MicroProcesador
+programaQueDivide12Por4 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2 4).(str 1 12)) unMicroprocesador
 
 ejecutarTests = hspec $ do
     describe "Test Punto 2 - Tests de NOP" $ do
@@ -84,7 +87,7 @@ ejecutarTests = hspec $ do
             ((acumuladorB . nop) xt80800) `shouldBe` 0
 
         it "NOP no cambia la memoria" $ do
-            ((memoria . nop) xt80800) `shouldBe` []
+            ((memoria . nop) xt80800) `shouldBe` replicate 1024 0
 
         it "NOP no cambia el mensaje de error" $ do
             ((mensajeError . nop) xt80800) `shouldBe` []
@@ -100,10 +103,10 @@ ejecutarTests = hspec $ do
             ((acumuladorB . (lodv 5)) xt80800) `shouldBe` 0
 
         it "SWAP cambia los valores de ambos acumuladores (acumulador A)" $ do
-            ((acumuladorB . swap) fp20) `shouldBe` 24
+            ((acumuladorA . swap) fp20) `shouldBe` 24
 
         it "SWAP cambia los valores de ambos acumuladores (acumulador B)" $ do
-            ((acumuladorA . swap) fp20) `shouldBe` 7
+            ((acumuladorB . swap) fp20) `shouldBe` 7
 
         it "Suma 10 + 22 da 32 en Acumulador A" $ do
             ((acumuladorA .programaQueSume10Con22) at8086) `shouldBe` 32
@@ -115,23 +118,23 @@ ejecutarTests = hspec $ do
             ((programCounter .add.(lodv 22).swap.(lodv 10)) at8086) `shouldBe` 4
 
     describe "Test Punto 4 - Tests de programa División" $ do
-        it "STR 2 5 para la memoria" $ do
+        it "STR 2 5 para la memoria, pone un 5 en la posicion 2" $ do
             ((memoria . (str 2 5)) at8086) `shouldBe` [1, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
-        it "LOD 2 de una memoria vacía debe dar 0" $ do
+        it "LOD 2 de una memoria vacía debe dejar con 0 el acumuladorA" $ do
             ((acumuladorA .(lod 2))  xt80800) `shouldBe` 0
 
         it "Division por cero da error" $ do
             ((mensajeError.programaQueDivide2Por0) xt80800) `shouldBe` "division by zero"
 
-        it "Division por cero aumenta program counter" $ do
+        it "Division por cero aumenta en 6 el program counter" $ do
             ((programCounter.programaQueDivide2Por0) xt80800) `shouldBe` 6
 
-        --it "Division de 12 por 4 se resuelve bien en Acumulador A" $ do
-            --(acumuladorA.division12Por4 xt80800) `shouldBe` 3
+        it "Division de 12 por 4 se resuelve bien en Acumulador A" $ do
+            ((acumuladorA.programaQueDivide12Por4) xt80800) `shouldBe` 3
 
-      --  it "Division de 12 por 4 blanquea Acumulador B" $ do
-            --(acumuladorB $ division12Por4 xt80800) `shouldBe` 0
+        it "Division de 12 por 4 pone en 0 el Acumulador B" $ do
+            ((acumuladorB.programaQueDivide12Por4) xt80800) `shouldBe` 0
 
-      --  it "Division de 12 por 4 no deja el mensaje de error porque funciona bien" $ do
-            --(mensajeError $ division12Por4 xt80800) `shouldBe` ""
+        it "Division de 12 por 4 no deja el mensaje de error porque funciona bien" $ do
+            ((mensajeError.programaQueDivide12Por4) xt80800) `shouldBe` []
