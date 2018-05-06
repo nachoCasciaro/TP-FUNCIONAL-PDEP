@@ -70,7 +70,7 @@ programaQueDivide2Por0 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2 
 --4. CASOS DE PRUEBA--
 
 fp20 :: MicroProcesador
-fp20 = UnMicroprocesador { memoria = [] , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = [] }
+fp20 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = [] }
 
 at8086 :: MicroProcesador
 at8086 = UnMicroprocesador {memoria=[1..20], acumuladorA=0, acumuladorB=0, programCounter=0, mensajeError=[]}
@@ -79,7 +79,7 @@ programaQueDivide12Por4 :: MicroProcesador->MicroProcesador
 programaQueDivide12Por4 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2 4).(str 1 12)) unMicroprocesador
 
 ejecutarTests = hspec $ do
-    describe "Test Punto 2 - Tests de NOP" $ do
+    describe "Test 4.1 Punto 2 - Tests de NOP" $ do
         it "NOP no cambia el acumulador A" $ do
             ((acumuladorA . nop) xt80800) `shouldBe` 0
 
@@ -95,7 +95,7 @@ ejecutarTests = hspec $ do
         it "Programa con 3 NOP avanza 3 veces el program counter" $ do
             ((programCounter.nop.nop.nop) xt80800) `shouldBe` 3
 
-    describe "Test Punto 3 - Tests de programa Suma" $ do
+    describe "Test 4.2 Punto 3 - Tests de programa Suma" $ do
         it "LODV de 5 lo carga en acumulador A" $ do
             ((acumuladorA . (lodv 5)) xt80800) `shouldBe` 5
 
@@ -117,7 +117,7 @@ ejecutarTests = hspec $ do
         it "Suma 10 + 22 deja 5 en Program Counter" $ do
             ((programCounter .add.(lodv 22).swap.(lodv 10)) at8086) `shouldBe` 4
 
-    describe "Test Punto 4 - Tests de programa División" $ do
+    describe "Test 4.3 Punto 4 - Tests de programa División" $ do
         it "STR 2 5 para la memoria, pone un 5 en la posicion 2" $ do
             ((memoria . (str 2 5)) at8086) `shouldBe` [1, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
