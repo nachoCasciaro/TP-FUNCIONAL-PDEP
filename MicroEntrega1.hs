@@ -10,6 +10,7 @@ data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int,
 
 --1.a.--
 
+--Cualquier Boludes --
 xt80800 :: MicroProcesador
 xt80800 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [] }
 
