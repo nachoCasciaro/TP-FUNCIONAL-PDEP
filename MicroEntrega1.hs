@@ -41,7 +41,7 @@ add :: MicroProcesador -> MicroProcesador
 add unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
 
 aumentarPC :: MicroProcesador->MicroProcesador
-aumentarPC unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
+aumentarPC = nop
 --2.--
 
 programaQueSume10Con22 :: MicroProcesador->MicroProcesador
@@ -138,3 +138,5 @@ main = hspec $ do
 
         it "la division de 12 por 4 no deja un mensaje de error porque realiza la division sin problemas" $ do
             ((mensajeError.programaQueDivide12Por4) xt80800) `shouldBe` ([]::String)
+
+--PARTE 2--
