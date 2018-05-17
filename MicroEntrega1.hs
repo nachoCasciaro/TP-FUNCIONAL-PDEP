@@ -1,5 +1,6 @@
 module MicroEntrega1 where
 import Test.Hspec
+import Text.Show.Functions
 --3.1 punto 1--
 
 --1.--
@@ -11,7 +12,7 @@ data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int,
 --1.a.--
 
 xt80800 :: MicroProcesador
-xt80800 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [] }
+xt80800 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = []}
 
 --3.2 Punto 2--
 
@@ -42,6 +43,7 @@ add unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = acumuladorA
 
 aumentarPC :: MicroProcesador->MicroProcesador
 aumentarPC = nop
+
 --2.--
 
 programaQueSume10Con22 :: MicroProcesador->MicroProcesador
@@ -70,7 +72,7 @@ programaQueDivide2Por0 unMicroprocesador  = (divide.(lod 1).swap.(lod 2).(str 2 
 --4. CASOS DE PRUEBA--
 
 fp20 :: MicroProcesador
-fp20 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = [] }
+fp20 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = []}
 
 at8086 :: MicroProcesador
 at8086 = UnMicroprocesador {memoria=[1..20] , acumuladorA=0 , acumuladorB=0 , programCounter=0 , mensajeError=[]}
@@ -138,5 +140,3 @@ main = hspec $ do
 
         it "la division de 12 por 4 no deja un mensaje de error porque realiza la division sin problemas" $ do
             ((mensajeError.programaQueDivide12Por4) xt80800) `shouldBe` ([]::String)
-
---PARTE 2--
