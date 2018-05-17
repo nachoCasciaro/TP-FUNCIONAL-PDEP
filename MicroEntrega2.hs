@@ -3,7 +3,70 @@ import Test.Hspec
 import Text.Show.Functions
 
 
+
+--3.1 punto 1--
+
+--1.--
+
 data MicroProcesador = UnMicroprocesador { memoria :: [Int], acumuladorA :: Int, acumuladorB :: Int, programCounter :: Int, mensajeError :: String, programas :: [Programa]} deriving (Show)
+
+--1.a.--
+
+xt80800 :: MicroProcesador
+xt80800 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [], programas = []}
+
+fp20 :: MicroProcesador
+fp20 = UnMicroprocesador { memoria = replicate 1024 0 , acumuladorA = 7 , acumuladorB = 24 , programCounter = 0, mensajeError = [], programas = []}
+
+at8086 :: MicroProcesador
+at8086 = UnMicroprocesador {memoria=[1..20] , acumuladorA=0 , acumuladorB=0 , programCounter=0 , mensajeError=[], programas = []}
+
+--3.2 Punto 2--
+
+--1.--
+
+nop :: MicroProcesador -> MicroProcesador
+nop unMicroprocesador = unMicroprocesador { programCounter = programCounter unMicroprocesador + 1}
+
+--2.--
+
+programaQueIncrementeElPC3 :: MicroProcesador -> MicroProcesador
+programaQueIncrementeElPC3 = nop.nop.nop
+
+--En este punto interviene la composicion--
+
+--3.3 punto 3--
+
+--1.--
+
+lodv :: Int -> MicroProcesador -> MicroProcesador
+lodv val unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = val}
+
+swap :: MicroProcesador -> MicroProcesador
+swap unMicroprocesador = aumentarPC unMicroprocesador { acumuladorB = acumuladorA unMicroprocesador, acumuladorA= acumuladorB unMicroprocesador}
+
+add :: MicroProcesador -> MicroProcesador
+add unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = acumuladorA unMicroprocesador + acumuladorB unMicroprocesador , acumuladorB = 0}
+
+aumentarPC :: MicroProcesador->MicroProcesador
+aumentarPC = nop
+
+
+--3.4 punto 4--
+
+--1.--
+
+divide :: MicroProcesador->MicroProcesador
+divide unMicroprocesador
+      |(acumuladorB unMicroprocesador) /= 0 =  aumentarPC unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0}
+      |otherwise = aumentarPC unMicroprocesador {mensajeError = "division by zero"}
+
+str :: Int->Int->MicroProcesador->MicroProcesador
+str addr val unMicroprocesador = aumentarPC unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr) (memoria unMicroprocesador))}
+
+lod :: Int->MicroProcesador->MicroProcesador
+lod addr unMicroprocesador = aumentarPC unMicroprocesador { acumuladorA = (!!) (memoria unMicroprocesador) (addr-1)}
+
 
 --PARTE 2--
 
@@ -13,7 +76,7 @@ type Programa = [(MicroProcesador -> MicroProcesador)]
 cargarPrograma :: Programa -> MicroProcesador -> MicroProcesador
 cargarPrograma programa unMicroprocesador = unMicroprocesador { programas = programas unMicroprocesador ++ [programa] }
 
-programaQueDivide12Por4 = [(str 1 12), (str 2 4), (lod 2), swap, (lod 1), divide]
+programaQueSume10Con22 = [(str 1 12), (str 2 4), (lod 2), swap, (lod 1), divide]
 
 programaQueDivide2Por0 = [(str 1 2), (str 2 0), (lod 2), swap, (lod 1), divide]
 
