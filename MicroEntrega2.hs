@@ -131,24 +131,29 @@ microInfinito = UnMicroprocesador { memoria = [0..] , acumuladorA = 0 , acumulad
 --4 CASOS DE PRUEBA--
 
 main = hspec $ do
-    describe "Test 4.2 " $ do
+    describe "Test 4.2" $ do
         it "despues de ejecutar el programa Que Sume 10 Con 22 el acumulador A debe quedar en 32" $ do
-            ((acumuladorA.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (32::Int)
+            ((acumuladorA.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (32::Int)
 
         it "despues de ejecutar el programa Que Sume 10 Con 22 el acumulador B debe quedar en 0" $ do
-            ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+            ((acumuladorB.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
 
         it "despues de ejecutar el programa Que Sume 10 Con 22 el program counter debe quedar en 4" $ do
-          ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+          ((acumuladorB.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
 
         it "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador A debe quedar en 2" $ do
-            ((acumuladorA.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (2::Int)
+            ((acumuladorA.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (2::Int)
 
         it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
-            ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
+            ((acumuladorB.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
 
         it  "despues de ejecutar el programa Que Divide 2 Con 0 da error" $ do
-            ((mensajeError.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
+            ((mensajeError.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
+
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
+            ((programCounter.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
+
+
 
     describe "Test 4.2 Punto 3" $ do
         it "lodv 5, carga un 5 en el acumulador A" $ do
