@@ -119,9 +119,13 @@ chequearBooleanos lista = foldl1 (&&) lista
 operarLista :: [Int]->[Bool]
 operarLista (x:y:xs) = zipWith (<=) (x:y:xs) (y:xs)
 
---
+--3.6 Punto 6
 
 microInfinito :: MicroProcesador
 microInfinito = UnMicroprocesador { memoria = [0..] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [], programas = []}
+
+a) Carga y ejecuta el programa correctamente, pero al querer mostrar el resultado por pantalla, este nunca termina de mostrar la memoria de microprocesador ya que es infinita.
+b) El programa nunca termina de ejecutar ya que la memoria es infinita y no puede encontrar alguna posicion de memoria que no este ordenada.
+c) En el caso a, ya que haskell utiliza lazy evaluation el programa funciona correctamente ya que en las instrucciones en las que opera con la memoria solamente utiliza una posicion especifica. Por esta razon, haskell evalua solamente hasta la posicion de memoria que necesita y el resto de la memoria infinita es ignorada. Por otra parte, en el punto b, haskell evaluara la memoria hasta encontrar alguna posicion que no este ordenada y en dicho caso devolvera false pero como en este caso, la memoria infinita esta ordena, nunca termina la ejecucion del programa.
 
 --
