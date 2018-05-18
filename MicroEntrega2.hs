@@ -155,11 +155,11 @@ main = hspec $ do
         it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
             ((programCounter.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
 
-        it  "despues de ejecutar el programa Que Divide 2 Con 0 el primer elemento de la memoria debe ser 1" $ do
-              ((flip (!!) 1.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (1::Int)
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el primer elemento de la memoria debe ser 2" $ do
+              ((flip (!!) 0.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (2::Int)
 
         it  "despues de ejecutar el programa Que Divide 2 Con 0 el segundo elemento de la memoria debe ser 0" $ do
-              ((flip (!!) 2.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
+              ((flip (!!) 1.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
 
     describe "Test 4.3" $ do
         it "despues de ejecutar ifnz de [lodv 3,swap] , el acumuladorA debe quedar en 24" $ do
