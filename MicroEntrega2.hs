@@ -130,6 +130,8 @@ microInfinito = UnMicroprocesador { memoria = [0..] , acumuladorA = 0 , acumulad
 --4 CASOS DE PRUEBA--
 programaPrueba = [lodv 3,swap]
 programaPrueba2 = [swap,nop,lodv 133,lodv 0,str 1 3,str 2 0]
+microDesorden = UnMicroprocesador { memoria = [2,5,1,0,6,9] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [], programas = []}
+
 main = hspec $ do
     describe "Test 4.2" $ do
         it "despues de ejecutar el programa Que Sume 10 Con 22 el acumulador A debe quedar en 32" $ do
@@ -153,9 +155,15 @@ main = hspec $ do
         it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
             ((programCounter.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
 
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el primer elemento de la memoria debe ser 1" $ do
+              ((flip (!!) 1.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (1::Int)
+
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el segundo elemento de la memoria debe ser 0" $ do
+              ((flip (!!) 2.memoria.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
+
     describe "Test 4.3" $ do
-        it "despues de ejecutar ifnz de [lodv 3,swap] , el acumuladorA debe quedar en 7" $ do
-            ((acumuladorA.ifnz programaPrueba) fp20) `shouldBe` (7::Int)
+        it "despues de ejecutar ifnz de [lodv 3,swap] , el acumuladorA debe quedar en 24" $ do
+            ((acumuladorA.ifnz programaPrueba) fp20) `shouldBe` (24::Int)
 
         it "despues de ejecutar ifnz de [lodv 3,swap] , el acumuladorB debe quedar en 3" $ do
             ((acumuladorB.ifnz programaPrueba) fp20) `shouldBe` (3::Int)
@@ -173,3 +181,5 @@ main = hspec $ do
     describe "Test 4.5" $ do
         it "la memoria del microprocesador debe estar ordenada" $ do
                 (tieneMemoriaOrdenada at8086) `shouldBe` (True::Bool)
+        it "la memoria del microprocesador  debe estar desordenada" $ do
+            (tieneMemoriaOrdenada microDesorden) `shouldBe` (False::Bool)
