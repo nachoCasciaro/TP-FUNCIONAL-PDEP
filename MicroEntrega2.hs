@@ -105,6 +105,6 @@ condicion :: MicroProcesador->Instruccion->Bool
 condicion unMicro instruccion = ( controlar. instruccion) unMicro
 
 controlar :: MicroProcesador->Bool
-controlar unMicro = acumuladorA unMicro /= 0 || acumuladorB unMicro /= 0 || memoria unMicro /= []
+controlar unMicro = acumuladorA unMicro /= 0 || acumuladorB unMicro /= 0 || memoria unMicro /= replicate 1024 0
 
 --
