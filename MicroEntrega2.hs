@@ -111,7 +111,7 @@ controlar unMicro = acumuladorA unMicro /= 0 || acumuladorB unMicro /= 0 || memo
 --3.5 Punto 5
 
 tieneMemoriaOrdenada :: MicroProcesador->Bool
-tieneMemoriaOrdenada unMicro = (chequearBooleanos.operarLista.memoria) unMicro  
+tieneMemoriaOrdenada unMicro = (chequearBooleanos.operarLista.memoria) unMicro
 
 chequearBooleanos :: [Bool]->Bool
 chequearBooleanos lista = foldl1 (&&) lista
@@ -128,4 +128,68 @@ microInfinito = UnMicroprocesador { memoria = [0..] , acumuladorA = 0 , acumulad
 --b) El programa nunca termina de ejecutar ya que la memoria es infinita y no puede encontrar alguna posicion de memoria que no este ordenada.
 --c) En el caso a, ya que haskell utiliza lazy evaluation el programa funciona correctamente ya que en las instrucciones en las que opera con la memoria solamente utiliza una posicion especifica. Por esta razon, haskell evalua solamente hasta la posicion de memoria que necesita y el resto de la memoria infinita es ignorada. Por otra parte, en el punto b, haskell evaluara la memoria hasta encontrar alguna posicion que no este ordenada y en dicho caso devolvera false pero como en este caso, la memoria infinita esta ordena, nunca termina la ejecucion del programa.
 
---
+--4 CASOS DE PRUEBA--
+
+main = hspec $ do
+    describe "Test 4.2 " $ do
+        it "despues de ejecutar el programa Que Sume 10 Con 22 el acumulador A debe quedar en 32" $ do
+            ((acumuladorA.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (32::Int)
+
+        it "despues de ejecutar el programa Que Sume 10 Con 22 el acumulador B debe quedar en 0" $ do
+            ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+
+        it "despues de ejecutar el programa Que Sume 10 Con 22 el program counter debe quedar en 4" $ do
+          ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+
+        it "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador A debe quedar en 2" $ do
+            ((acumuladorA.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (2::Int)
+
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
+            ((acumuladorB.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (0::Int)
+
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 da error" $ do
+            ((mensajeError.ejecutarPrograma.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
+
+    describe "Test 4.2 Punto 3" $ do
+        it "lodv 5, carga un 5 en el acumulador A" $ do
+            ((acumuladorA.(lodv 5)) xt80800) `shouldBe` (5::Int)
+
+        it "lodv 5 deja el acumuladorB en 0" $ do
+            ((acumuladorB.(lodv 5)) xt80800) `shouldBe` (0::Int)
+
+        it "swap intercambia el valor del acumulador A (7) por el del acumulador B (24)" $ do
+            ((acumuladorA.swap) fp20) `shouldBe` (24::Int)
+
+        it "swap intercambia el valor del acumulador B (24) por el del acumulador A (7)" $ do
+            ((acumuladorB.swap) fp20) `shouldBe` (7::Int)
+
+        it "El programa que suma 10 con 22, que da como resultado 32, y lo guarda en Acumulador A" $ do
+            ((acumuladorA.programaQueSume10Con22) xt80800) `shouldBe` (32::Int)
+
+        it "El programa que suma 10 con 22 deja en 0 el Acumulador B" $ do
+            ((acumuladorB.programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+
+        it "El programa que suma 10 con 22 aumenta en 4 el Program Counter" $ do
+            ((programCounter.programaQueSume10Con22) xt80800) `shouldBe` (4::Int)
+
+    describe "Test 4.3 Punto 4" $ do
+        it "str 2 5, en la memoria pone un 5 en la posicion 2" $ do
+            ((memoria.(str 2 5)) at8086) `shouldBe` ([1, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]::[Int])
+
+        it "lod 2 de una memoria vacía debe dejar con 0 el acumuladorA" $ do
+            ((acumuladorA.(lod 2))  xt80800) `shouldBe` (0::Int)
+
+        it "la division por cero da error" $ do
+            ((mensajeError.programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
+
+        it "la division por cero aumenta en 6 el program counter" $ do
+            ((programCounter.programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
+
+        it "la division de 12 por 4 debe guardar un 3 en el acumulador A " $ do
+            ((acumuladorA.programaQueDivide12Por4) xt80800) `shouldBe` (3::Int)
+
+        it "la division de 12 por 4 deja en 0 el Acumulador B" $ do
+            ((acumuladorB.programaQueDivide12Por4) xt80800) `shouldBe` (0::Int)
+
+        it "la division de 12 por 4 no deja un mensaje de error porque realiza la division sin problemas" $ do
+            ((mensajeError.programaQueDivide12Por4) xt80800) `shouldBe` ([]::String)
