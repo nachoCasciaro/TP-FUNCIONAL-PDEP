@@ -113,7 +113,7 @@ controlar unMicro = acumuladorA unMicro /= 0 || acumuladorB unMicro /= 0 || memo
 tieneMemoriaOrdenada :: MicroProcesador->Bool
 tieneMemoriaOrdenada unMicro = (chequearBooleanos.operarLista.memoria) unMicro  
 
-chequarBooleanos :: [Bool]->Bool
+chequearBooleanos :: [Bool]->Bool
 chequearBooleanos lista = foldl1 (&&) lista
 
 operarLista :: [Int]->[Bool]
