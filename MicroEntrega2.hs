@@ -119,6 +119,9 @@ chequearBooleanos lista = foldl1 (&&) lista
 operarLista :: [Int]->[Bool]
 operarLista (x:y:xs) = zipWith (<=) (x:y:xs) (y:xs)
 
+--
 
+microInfinito :: MicroProcesador
+microInfinito = UnMicroprocesador { memoria = [0..] , acumuladorA = 0 , acumuladorB = 0 , programCounter = 0, mensajeError = [], programas = []}
 
 --
