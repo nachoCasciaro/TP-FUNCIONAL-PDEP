@@ -107,4 +107,18 @@ condicion unMicro instruccion = ( controlar. instruccion) unMicro
 controlar :: MicroProcesador->Bool
 controlar unMicro = acumuladorA unMicro /= 0 || acumuladorB unMicro /= 0 || memoria unMicro /= replicate 1024 0
 
+
+--3.5 Punto 5
+
+tieneMemoriaOrdenada :: MicroProcesador->Bool
+tieneMemoriaOrdenada unMicro = (chequearBooleanos.operarLista.memoria) unMicro  
+
+chequarBooleanos :: [Bool]->Bool
+chequearBooleanos lista = foldl1 (&&) lista
+
+operarLista :: [Int]->[Bool]
+operarLista (x:y:xs) = zipWith (<=) (x:y:xs) (y:xs)
+
+
+
 --
