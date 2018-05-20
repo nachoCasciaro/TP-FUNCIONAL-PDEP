@@ -56,9 +56,9 @@ aumentarPC = nop
 --1.--
 
 divide :: MicroProcesador->MicroProcesador
-divide unMicroprocesador
-      |(acumuladorB unMicroprocesador) /= 0 =  aumentarPC unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0}
-      |otherwise = aumentarPC unMicroprocesador {mensajeError = "division by zero"}
+divide (UnMicroprocesador memoria acumuladorA 0 programCounter mensajeError programas) = aumentarPC (UnMicroprocesador memoria acumuladorA 0 programCounter "division by zero" programas)
+divide unMicroprocesador = aumentarPC unMicroprocesador {acumuladorA = div (acumuladorA unMicroprocesador) (acumuladorB unMicroprocesador) , acumuladorB = 0}
+
 
 str :: Int->Int->MicroProcesador->MicroProcesador
 str addr val unMicroprocesador = aumentarPC unMicroprocesador { memoria = (take (addr-1) (memoria unMicroprocesador)) ++ [val] ++ (drop (addr) (memoria unMicroprocesador))}
