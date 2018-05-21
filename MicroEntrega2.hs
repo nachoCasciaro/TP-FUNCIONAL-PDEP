@@ -141,7 +141,7 @@ main = hspec $ do
             ((acumuladorB.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
 
         it "despues de ejecutar el programa Que Sume 10 Con 22 el program counter debe quedar en 4" $ do
-          ((acumuladorB.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (0::Int)
+          ((programCounter.ejecutarPrograma programaQueSume10Con22.cargarPrograma programaQueSume10Con22) xt80800) `shouldBe` (4::Int)
 
         it "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador A debe quedar en 2" $ do
             ((acumuladorA.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (2::Int)
@@ -152,7 +152,7 @@ main = hspec $ do
         it  "despues de ejecutar el programa Que Divide 2 Con 0 da error" $ do
             ((mensajeError.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` ("division by zero"::String)
 
-        it  "despues de ejecutar el programa Que Divide 2 Con 0 el acumulador B debe quedar en 0" $ do
+        it  "despues de ejecutar el programa Que Divide 2 Con 0 el programCounter debe quedar en 6" $ do
             ((programCounter.ejecutarPrograma programaQueDivide2Por0.cargarPrograma programaQueDivide2Por0) xt80800) `shouldBe` (6::Int)
 
         it  "despues de ejecutar el programa Que Divide 2 Con 0 el primer elemento de la memoria debe ser 2" $ do
